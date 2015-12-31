@@ -55,6 +55,7 @@ class MarathonClient(object):
             server = servers.pop(0)
             url = ''.join([server.rstrip('/'), path])
             try:
+                marathon.log.info('{method} {url} with data: {data}'.format(method=method, url=url, data=data))
                 response = requests.request(method, url, params=params, data=data, headers=headers,
                                             auth=self.auth, timeout=self.timeout)
                 marathon.log.info('Got response from %s', server)
