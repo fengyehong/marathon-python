@@ -74,13 +74,15 @@ class MarathonConfig(MarathonObject):
     :param int task_launch_timeout:
     :param int task_reservation_timeout:
     :param int marathon_store_timeout:
+    :param dict kwargs: additional arguments for forward compatibility
     """
 
     def __init__(self, checkpoint=None, executor=None, failover_timeout=None, framework_name=None, ha=None,
                  hostname=None, leader_proxy_connection_timeout_ms=None, leader_proxy_read_timeout_ms=None,
                  local_port_min=None, local_port_max=None, master=None, mesos_leader_ui_url=None, mesos_role=None, mesos_user=None,
                  webui_url=None, reconciliation_initial_delay=None, reconciliation_interval=None,
-                 task_launch_timeout=None, marathon_store_timeout=None, task_reservation_timeout=None, features=None):
+                 task_launch_timeout=None, marathon_store_timeout=None, task_reservation_timeout=None, features=None,
+                 **kwargs):
         self.checkpoint = checkpoint
         self.executor = executor
         self.failover_timeout = failover_timeout
@@ -99,6 +101,8 @@ class MarathonConfig(MarathonObject):
         self.task_launch_timeout = task_launch_timeout
         self.task_reservation_timeout = task_reservation_timeout
         self.marathon_store_timeout = marathon_store_timeout
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
 
 class MarathonZooKeeperConfig(MarathonObject):
@@ -116,10 +120,14 @@ class MarathonZooKeeperConfig(MarathonObject):
     :param str zk_state:
     :param int zk_timeout:
     :param int zk_connection_timeout:
+    :param bool zk_compression:
+    :param int zk_compression_threshold:
+    :param int zk_max_node_size:
     """
 
     def __init__(self, zk=None, zk_future_timeout=None, zk_hosts=None, zk_max_versions=None, zk_path=None,
-                 zk_session_timeout=None, zk_state=None, zk_timeout=None, zk_connection_timeout=None):
+                 zk_session_timeout=None, zk_state=None, zk_timeout=None, zk_connection_timeout=None,
+                 zk_compression=None, zk_compression_threshold=None, zk_max_node_size=None):
         self.zk = zk
         self.zk_hosts = zk_hosts
         self.zk_path = zk_path
@@ -129,6 +137,9 @@ class MarathonZooKeeperConfig(MarathonObject):
         self.zk_connection_timeout = zk_connection_timeout
         self.zk_future_timeout = zk_future_timeout
         self.zk_session_timeout = zk_session_timeout
+        self.zk_compression = zk_compression
+        self.zk_compression_threshold = zk_compression_threshold
+        self.zk_max_node_size = zk_max_node_size
 
 
 class MarathonHttpConfig(MarathonObject):
